@@ -42,7 +42,14 @@ class ServiceProvider extends BaseServiceProvider
             __DIR__ . '/../../config/config.php' => base_path('config/' . $this->package . '.php'),
         ], 'config');
 
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations/');
+        $this->registerMigrations();
+    }
+
+    protected function registerMigrations()
+    {
+        if (ContentfulUtilities::$runsMigrations && $this->app->runningInConsole()) {
+            $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations/');
+        }
     }
 
     /**
